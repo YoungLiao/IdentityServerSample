@@ -9,6 +9,8 @@ namespace ThirdPartyDemo
     {
         static async Task Main(string[] args)
         {
+            //HttpClient 无需用using包起来
+            //https://aspnetmonsters.com/2016/08/2016-08-27-httpclientwrong/
             var client = new HttpClient();
 
             var disco = await client.GetDiscoveryDocumentAsync("https://localhost:5000");
