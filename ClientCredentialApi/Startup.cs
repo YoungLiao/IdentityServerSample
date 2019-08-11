@@ -29,7 +29,7 @@ namespace ClientCredentialApi
             services.AddAuthentication("Bearer")
                 .AddIdentityServerAuthentication(options => {
                     options.Authority = "https://localhost:5000";
-                    
+                    options.RequireHttpsMetadata = true;
                     options.ApiName = "api";
                 });
 

@@ -7,17 +7,21 @@ namespace ThirdPartyDemo
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            var diso = DiscoveryClient.GetAsync("https://localhost:5000").Result;
-            if(diso.IsError)
+            var client = new HttpClient();
+
+            var disco = await client.GetDiscoveryDocumentAsync("https://localhost:5000");
+            if (disco.IsError) throw new Exception(disco.Error);
+
+            var tockenReponse = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
             {
-                Console.WriteLine(diso.Error);
-            }
+                Address = disco.TokenEndpoint,
 
-            var tockenClient = new TokenClient(diso.TokenEndpoint, "client", "secret");
-
-            var tockenReponse = tockenClient.RequestClientCredentialsAsync("api").Result;
+                ClientId = "client",
+                ClientSecret = "secret",
+                Scope = "api"
+            });
 
             if(tockenReponse.IsError)
             {
@@ -28,30 +32,14 @@ namespace ThirdPartyDemo
                 Console.WriteLine(tockenReponse.Json);
             }
 
-            using (HttpClient client = new HttpClient()) 
+            client.SetBearerToken(tockenReponse.AccessToken);
+
+            var result = client.GetAsync("https://localhost:5002/api/values/5").Result;
+
+            if(result.IsSuccessStatusCode)
             {
-                client.SetBearerToken(tockenReponse.AccessToken);
-
-                var response = client.GetAsync("https://localhost:5002/api/values").Result;
-
-                if(response.IsSuccessStatusCode)
-                {
-                    Console.WriteLine(response.Content.ReadAsStringAsync().Result);
-                }
+                Console.WriteLine(result.Content.ReadAsStringAsync().Result);
             }
-
-            // using (HttpClient client = new HttpClient()) 
-            // {
-            //     var disc = client.GetAsync("https://localhost:5000").Result;
-            //     if(!disc.IsSuccessStatusCode)
-            //     {
-            //         Console.WriteLine(disc.StatusCode);
-            //     }
-
-            //     Console.WriteLine($"{disc.IsSuccessStatusCode},{disc.StatusCode}");
-            // }
-            
-            
 
             Console.ReadLine();
         }
