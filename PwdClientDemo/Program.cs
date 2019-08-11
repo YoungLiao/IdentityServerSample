@@ -15,7 +15,8 @@ namespace PwdClientDemo
             if (disco.IsError) throw new Exception(disco.Error);    
 
             Console.WriteLine($"TockenEndPoint:{disco.TokenEndpoint}");
-
+            
+            //https://identitymodel.readthedocs.io/en/latest/client/token.html#requesting-a-token-using-the-password-grant-type
             var tockenReponse = await client.RequestPasswordTokenAsync(new PasswordTokenRequest
             {
                 Address = disco.TokenEndpoint,
@@ -24,7 +25,6 @@ namespace PwdClientDemo
                 ClientSecret = "secret",
                 Scope = "api",
 
-                
                 UserName = "young",
                 Password = "wenwen520"
             });
