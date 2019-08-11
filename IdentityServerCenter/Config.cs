@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using IdentityServer4.Models;
+using IdentityServer4.Test;
 
 namespace IdentityServerCenter
 {
@@ -28,6 +29,32 @@ namespace IdentityServerCenter
                     },
 
                     AllowedScopes = {"api"}
+                },
+
+                new Client()
+                {
+                    ClientId = "pwdClient",
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+
+                    ClientSecrets = {
+                        new Secret("secret".Sha256())
+                    },
+                    AllowedScopes = {"api"},
+                    //也可以指定不要Secret
+                    // RequireClientSecret = false
+                }
+            };
+        }
+
+        public static List<TestUser> GetTestUsers()
+        {
+            return new List<TestUser>
+            {
+                new TestUser
+                {
+                    SubjectId = "1",
+                    Username = "young",
+                    Password = "wenwen520"
                 }
             };
         }
