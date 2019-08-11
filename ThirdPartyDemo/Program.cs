@@ -36,7 +36,7 @@ namespace ThirdPartyDemo
 
             client.SetBearerToken(tockenReponse.AccessToken);
 
-            var result = client.GetAsync("https://localhost:5002/api/values/5").Result;
+            var result = await client.GetAsync("https://localhost:5002/api/values");
 
             if(result.IsSuccessStatusCode)
             {
