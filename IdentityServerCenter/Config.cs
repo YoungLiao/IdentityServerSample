@@ -54,7 +54,7 @@ namespace IdentityServerCenter
                 {
                     SubjectId = "1",
                     Username = "young",
-                    Password = "wenwen520"
+                    Password = "123456"
                 }
             };
         }
