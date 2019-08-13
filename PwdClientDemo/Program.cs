@@ -26,7 +26,7 @@ namespace PwdClientDemo
                 Scope = "api",
 
                 UserName = "young",
-                Password = "wenwen520"
+                Password = "123456"
             });
 
             if(tockenReponse.IsError)
